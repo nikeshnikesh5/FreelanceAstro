@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anamika – Astro science consultant</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0E0C2B;--plum:#2A2058;--brass:#D4AF6A;--mist:#E6E1F4;--dim:#A9A3C7;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--ink);color:var(--mist);font:400 17px/1.6 Figtree,system-ui,sans-serif}
+#sky{position:fixed;inset:0;z-index:0}
+#sky canvas{display:block}
+main,header,footer{position:relative;z-index:1}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px clamp(20px,5vw,64px)}
+.brand{display:flex;flex-direction:column;line-height:1.1;color:var(--brass);text-decoration:none}
+.bn{font:300 30px Fraunces,serif;letter-spacing:.04em}
+.bt{font:500 13px Figtree,sans-serif;color:var(--dim);margin-top:3px}
+nav{display:flex;gap:26px}
+nav a{color:var(--mist);text-decoration:none;font-size:15px}
+nav a:hover,nav a:focus-visible{color:var(--brass)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{padding:0 clamp(20px,5vw,64px);max-width:1200px;margin:0 auto}
+.hero{min-height:calc(100svh - 80px);display:flex;flex-direction:column;justify-content:center;padding-bottom:40px}
+h1{font:300 clamp(40px,6vw,76px)/1.05 Fraunces,serif;margin:0 0 20px;max-width:11em;letter-spacing:-.01em}
+.lede{max-width:34em;color:var(--dim);margin:0 0 28px}
+.btn{display:inline-block;background:var(--brass);color:var(--ink);font:600 16px Figtree,sans-serif;padding:14px 26px;border:0;border-radius:999px;text-decoration:none;cursor:pointer}
+.btn:hover{background:#e6c47f}
+.reading{margin-top:20px;max-width:430px;padding:22px 24px;background:rgba(42,32,88,.72);border-left:3px solid var(--brass);backdrop-filter:blur(6px)}
+.reading h2{font:500 30px Fraunces,serif;margin:0}
+.reading .meta{color:var(--brass);font-size:14px;margin:2px 0 10px}
+.reading p{margin:0 0 14px}
+.finder{margin-top:26px;max-width:580px;padding:22px 24px;background:rgba(42,32,88,.78);border-left:3px solid var(--brass);backdrop-filter:blur(6px)}
+#fs{font-size:13px;color:var(--brass);margin:0 0 6px}
+#fq{font:500 25px/1.25 Fraunces,serif;margin:0 0 16px}
+#fo{display:flex;flex-wrap:wrap;gap:10px}
+.chip{background:rgba(14,12,43,.7);color:var(--mist);border:1px solid #4b4182;border-radius:8px;padding:10px 14px;font:500 15px Figtree,sans-serif;cursor:pointer;text-align:left;transition:border-color .15s,color .15s}
+.chip:hover,.chip:focus-visible{border-color:var(--brass);color:var(--brass)}
+#fr p{margin:0 0 12px}
+.you{font:italic 300 21px/1.3 Fraunces,serif;color:var(--brass)}
+.rec{color:var(--brass)}
+.note{font-size:13px;color:var(--dim);line-height:1.45}
+.link{background:none;border:0;color:var(--dim);font:inherit;text-decoration:underline;cursor:pointer;padding:6px 0}
+.link:hover{color:var(--brass)}
+.fa{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:6px 0 14px}
+#breath{position:fixed;left:0;right:0;bottom:calc(14vh + env(safe-area-inset-bottom,0px));text-align:center;font:300 clamp(28px,5vw,44px) Fraunces,serif;color:var(--mist);text-shadow:0 2px 20px rgba(14,12,43,.9);opacity:0;transition:opacity .6s;pointer-events:none;z-index:5}
+.calm{display:block;margin-top:12px}
+.pr{text-align:right}.pr a{display:block;font:500 14px Figtree,sans-serif;color:var(--mist);margin-top:4px}
+.pr a:hover,.pr a:focus-visible{color:var(--brass)}
+#tf{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px}
+.chip.on{border-color:var(--brass);color:var(--brass);background:rgba(212,175,106,.12)}
+#tl{columns:2;column-gap:64px;animation:fi .5s}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.q{margin:0 0 34px;break-inside:avoid;border-left:2px solid var(--brass);padding-left:20px}
+.q p{font:italic 300 22px/1.4 Fraunces,serif;margin:0 0 10px}
+.q figcaption{color:var(--dim);font-size:15px}
+.reading small{display:block;color:var(--dim);font-size:13px;line-height:1.4;margin-top:8px}
+.reading label{font-size:14px;color:var(--dim);display:block;margin-bottom:4px}
+input,select{width:100%;background:rgba(14,12,43,.8);color:var(--mist);border:1px solid #4b4182;border-radius:8px;padding:11px 12px;font:inherit}
+section{padding:90px 0 40px}
+h2.t{font:300 clamp(30px,4vw,46px)/1.15 Fraunces,serif;margin:0 0 34px;max-width:16em}
+.svc{display:grid;grid-template-columns:1.2fr 2fr auto;gap:20px 40px;padding:26px 0;border-top:1px solid #4b4182;align-items:baseline}
+.svc:last-child{border-bottom:1px solid #4b4182}
+.svc h3{font:500 24px Fraunces,serif;margin:0}
+.svc p{margin:0;color:var(--dim)}
+.svc .pr{font:500 22px Fraunces,serif;color:var(--brass);white-space:nowrap}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:50px}
+.about p{margin:0 0 16px;color:var(--dim)}
+.about strong{color:var(--mist);font-weight:500}
+form{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:720px}
+form .full{grid-column:1/-1}
+form label{display:block;font-size:14px;color:var(--dim);margin-bottom:4px}
+#ok{display:none;max-width:720px;padding:22px 24px;background:rgba(42,32,88,.8);border-left:3px solid var(--brass)}
+footer{padding:50px clamp(20px,5vw,64px) 40px;color:var(--dim);font-size:14px}
+@media(max-width:760px){#tl{columns:1}.pr{text-align:left}nav{display:none}.svc,.about,form{grid-template-columns:1fr}.svc{gap:6px}}
+@media(prefers-reduced-motion:reduce){#tl{animation:none}html{scroll-behavior:auto}}
+
+/* hero layout */
+main,.wrap{pointer-events:none}
+.hero>*,section{pointer-events:auto}
+.hero .wheelspace{pointer-events:none}
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-template-areas:"head wheel" "finder wheel" "calm reading";gap:22px 56px;align-content:start;min-height:calc(100svh - 80px);padding-top:16px;padding-bottom:50px}
+.h-head{grid-area:head;align-self:end}
+.h-head h1{margin:0 0 14px}
+.who{font:300 clamp(24px,3vw,34px) Fraunces,serif;color:var(--brass);letter-spacing:.03em;margin:0 0 12px}
+.h-head .lede{margin:0;font-size:18px}
+.wheelspace{grid-area:wheel;aspect-ratio:1;width:min(100%,540px);justify-self:center;align-self:start}
+.finder{grid-area:finder;margin:0;max-width:none;border:1px solid rgba(212,175,106,.35);border-left:1px solid rgba(212,175,106,.35);border-radius:16px;padding:20px 22px 22px;background:rgba(30,24,72,.8)}
+.calm{grid-area:calm;justify-self:start;margin:0}
+.reading{grid-area:reading;margin:0;max-width:none;border:1px solid rgba(212,175,106,.3);border-left:1px solid rgba(212,175,106,.3);border-radius:16px;padding:16px 20px;align-self:start}
+.reading h2{font-size:26px}.reading p{font-size:15px;margin:0 0 10px}
+.reading .hint{color:var(--brass);font-size:13px;margin:0 0 6px}
+.ftop{display:flex;align-items:center;justify-content:space-between;min-height:30px;margin-bottom:10px}
+.prog{display:flex;gap:6px;margin-left:auto}
+.prog i{width:36px;height:4px;border-radius:2px;background:#4b4182;transition:background .3s}
+.prog i.on{background:var(--brass)}
+#fq{font:500 27px/1.2 Fraunces,serif;margin:0 0 16px}
+#fo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#fo.list{grid-template-columns:1fr}
+#fo:not(.list) .chip:last-child{grid-column:1/-1}
+.chip{min-height:50px;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:10px 14px}
+.chip b{font-weight:600;font-size:16px}
+.chip span{font-size:13px;font-weight:400;color:var(--dim)}
+.chip:hover span,.chip:focus-visible span{color:var(--mist)}
+#tf .chip{min-height:0;flex-direction:row;padding:9px 14px}
+@media(max-width:900px){
+.hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "wheel" "finder" "calm" "reading";gap:16px;min-height:0}
+.wheelspace{width:min(60vw,250px)}
+.h-head{align-self:start}
+#fo:not(.list){grid-template-columns:1fr 1fr}
+}
+@media(max-width:420px){#fo:not(.list){grid-template-columns:1fr}.finder{padding:18px 16px}#fq{font-size:24px}}
+.btn.wa{background:#25D366;color:#06371b}.btn.wa:hover{background:#3ae077}
+.wafab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));z-index:6;width:58px;height:58px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 22px rgba(0,0,0,.4);pointer-events:auto}
+.wafab:hover{background:#3ae077}
+#ok .btn{margin-top:14px}
+#loader{position:fixed;inset:0;z-index:100;overflow:hidden;background:radial-gradient(circle at 50% 40%,#2A2058 0%,#0E0C2B 72%);display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;transition:opacity .9s ease,transform .9s cubic-bezier(.6,0,.9,.4),visibility .9s}
+#loader.hide{opacity:0;visibility:hidden;transform:scale(2)}
+.ld-aur{position:absolute;width:60vmax;height:60vmax;border-radius:50%;filter:blur(90px);opacity:.32;animation:drift 18s ease-in-out infinite alternate}
+.ld-aur.a1{background:#4FB3B0;left:-22vmax;top:-24vmax}
+.ld-aur.a2{background:#6C5BC4;right:-22vmax;bottom:-26vmax;animation-delay:-9s}
+@keyframes drift{to{transform:translate(9vmax,7vmax) scale(1.2)}}
+.ld-stars{position:absolute;inset:-30px;transition:transform .3s ease-out}
+.st{position:absolute;border-radius:50%;background:#E6E1F4;animation:tw 3s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:.95}}
+.ld-wave{position:absolute;left:0;bottom:0;width:200%;height:150px;fill:rgba(79,179,176,.16);animation:flow 16s linear infinite}
+.ld-wave.b{fill:rgba(108,91,196,.22);animation-duration:24s;animation-direction:reverse;height:120px}
+@keyframes flow{to{transform:translateX(-50%)}}
+.ld-box{position:relative;max-width:520px;width:100%;padding:28px 26px 22px;border:1px solid rgba(212,175,106,.3);border-radius:22px;background:rgba(30,24,72,.55);backdrop-filter:blur(14px);box-shadow:0 20px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .25s ease-out;animation:boxin 1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes boxin{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+.ld-ringw{position:relative;width:124px;height:124px;margin:0 auto 8px;transition:transform .9s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 0 18px rgba(212,175,106,.35))}
+.ld-ringsvg{width:100%;height:100%;overflow:visible}
+.ld-ringsvg .r1{transform-box:view-box;transform-origin:50% 50%;animation:spin 14s linear infinite}
+.orb{transform-box:view-box;transform-origin:50% 50%;animation:spin 5s linear infinite}
+.orb.o2{animation-duration:8s;animation-direction:reverse}.orb.o3{animation-duration:11s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ld-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:300 34px Fraunces,serif;color:var(--brass)}
+.ld-num.pop{animation:pop .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.25)}100%{transform:scale(1);opacity:1}}
+.ld-name{font:300 20px Fraunces,serif;color:var(--brass);letter-spacing:.04em;margin:0 0 14px}
+.ld-stage{min-height:210px}
+.wd{display:inline-block;white-space:pre;animation:wd .75s cubic-bezier(.2,.8,.2,1) both}
+@keyframes wd{from{opacity:0;filter:blur(8px);transform:translateY(12px) scale(.6)}to{opacity:1;filter:blur(0);transform:none}}
+#loader h2{font:300 clamp(30px,6vw,44px)/1.1 Fraunces,serif;margin:0 0 14px}
+.ld-msg{color:var(--mist);margin:0;font-size:18px}
+.ld-segs{display:flex;gap:8px;max-width:340px;margin:14px auto 16px}
+.ld-segs button{flex:1;height:22px;background:none;border:0;padding:0;position:relative;cursor:pointer}
+.ld-segs button::after{content:"";position:absolute;left:0;right:0;top:9px;height:4px;border-radius:2px;background:#4b4182}
+.ld-segs i{position:absolute;left:0;top:9px;height:4px;width:0;border-radius:2px;background:var(--brass);z-index:1;box-shadow:0 0 10px rgba(212,175,106,.7)}
+.ld-segs button.done i{width:100%}
+.ld-segs button.on i{animation:fill var(--d) linear forwards}
+@keyframes fill{to{width:100%}}
+.ld-actions{display:flex;gap:22px;justify-content:center;align-items:center}
+.btn.sh{position:relative;overflow:hidden}
+.btn.sh::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shine 2.6s infinite}
+@keyframes shine{to{left:130%}}
+.btn.pulse{animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(212,175,106,.6)}100%{box-shadow:0 0 0 18px rgba(212,175,106,0)}}
+@media(max-width:520px){.ld-box{padding:22px 18px 18px}.ld-msg{font-size:17px}.ld-ringw{width:104px;height:104px}.ld-stage{min-height:230px}}
+@media(prefers-reduced-motion:reduce){.ld-aur,.st,.ld-wave,.ld-ringsvg .r1,.orb,.wd,.ld-num.pop,.btn.sh::after,.btn.pulse,.ld-box{animation:none}#loader,.ld-box,.ld-ringw{transition:none}}
+</style>
+</head>
+<body>
+<div id="loader" role="dialog" aria-modal="true" aria-labelledby="ldT">
+  <div class="ld-aur a1"></div><div class="ld-aur a2"></div>
+  <div class="ld-stars" id="ldStars" aria-hidden="true"></div>
+  <svg class="ld-wave" viewBox="0 0 2880 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 C240 20 480 100 720 60 S1200 100 1440 60 S1920 100 2160 60 S2640 100 2880 60 V120 H0Z"/></svg>
+  <svg class="ld-wave b" viewBox="0 0 2880 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 72 C240 104 480 36 720 72 S1200 36 1440 72 S1920 36 2160 72 S2640 36 2880 72 V120 H0Z"/></svg>
+  <div class="ld-box" id="ldBox">
+    <div class="ld-ringw" id="ldRing">
+      <svg class="ld-ringsvg" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="r1" cx="60" cy="60" r="54" fill="none" stroke="#D4AF6A" stroke-width="1.4" stroke-dasharray="3 6"/>
+        <circle cx="60" cy="60" r="38" fill="none" stroke="#D4AF6A" stroke-opacity=".35"/>
+        <circle cx="60" cy="60" r="22" fill="none" stroke="#D4AF6A" stroke-opacity=".25"/>
+        <g class="orb o1"><circle cx="60" cy="6" r="3.4" fill="#8FD3D0"/></g>
+        <g class="orb o2"><circle cx="60" cy="22" r="3" fill="#F2A7C8"/></g>
+        <g class="orb o3"><circle cx="60" cy="38" r="2.6" fill="#F2B84B"/></g>
+      </svg>
+      <span class="ld-num" id="ldNum">1</span>
+    </div>
+    <p class="ld-name">Consultant Anamika</p>
+    <div class="ld-stage" id="ldStage" aria-live="polite">
+      <h2 id="ldT">Not magic. Not dark belief.</h2>
+      <p class="ld-msg" id="ldM">This is a structured way of reading your birth chart. Nothing mystical, nothing to fear.</p>
+    </div>
+    <div class="ld-segs"><button type="button" aria-label="Step 1"><i></i></button><button type="button" aria-label="Step 2"><i></i></button><button type="button" aria-label="Step 3"><i></i></button><button type="button" aria-label="Step 4"><i></i></button></div>
+    <div class="ld-actions"><button type="button" class="link" id="ldSkip">Skip</button><button type="button" class="btn sh" id="ldGo">Next</button></div>
+  </div>
+</div>
+<script>
+(function(){
+const q=id=>document.getElementById(id),L=q('loader'),h=q('ldT'),m=q('ldM'),go=q('ldGo'),rw=q('ldRing'),num=q('ldNum'),box=q('ldBox'),segs=[...document.querySelectorAll('.ld-segs button')];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const S=[["Not magic. Not dark belief.","This is a structured way of reading your birth chart. Nothing mystical, nothing to fear."],
+["Your chart shows your personality","Your birth date, time and place show your strengths, habits and timing, so advice fits you and not everyone."],
+["Then the right path","Anamika turns your chart into practical steps for career, money, relationships or a big decision."],
+["No rituals. No costly remedies.","Nothing to buy and nothing to perform. Astrology offers perspective, not guarantees. For urgent health, legal or financial matters, please also consult a qualified professional."]];
+const st=q('ldStars');for(let k=0;k<70;k++){const d=document.createElement('i');d.className='st';const z=Math.random()*2.2+.8;d.style.cssText='left:'+Math.random()*100+'%;top:'+Math.random()*100+'%;width:'+z+'px;height:'+z+'px;animation-delay:'+(Math.random()*3).toFixed(2)+'s;animation-duration:'+(2+Math.random()*3).toFixed(2)+'s';st.appendChild(d)}
+function words(el,t,base){el.textContent='';t.split(' ').forEach((w,k)=>{const s=document.createElement('span');s.className='wd';s.textContent=w+' ';s.style.animationDelay=(base+k*.045).toFixed(2)+'s';el.appendChild(s)})}
+let i=-1,timer,done=false;
+document.documentElement.style.overflow='hidden';
+function show(n){i=n;clearTimeout(timer);words(h,S[n][0],0);words(m,S[n][1],.25);
+  num.textContent=n+1;num.classList.remove('pop');void num.offsetWidth;num.classList.add('pop');
+  rw.style.transform='scale('+(1+n*.12)+')';
+  const last=n===S.length-1,dur=last?7000:4000;
+  segs.forEach((b,k)=>{b.classList.toggle('done',k<n);b.classList.toggle('on',k===n);b.style.setProperty('--d',dur+'ms')});
+  const f=segs[n].firstChild;f.style.animation='none';void f.offsetWidth;f.style.animation='';
+  go.textContent=last?'Enter site':'Next';go.classList.toggle('pulse',last);go.classList.toggle('sh',!last);
+  timer=setTimeout(()=>last?close():show(n+1),dur)}
+function close(){if(done)return;done=true;clearTimeout(timer);L.classList.add('hide');document.documentElement.style.overflow='';setTimeout(()=>L.remove(),1000)}
+go.addEventListener('click',()=>i===S.length-1?close():show(i+1));
+q('ldSkip').addEventListener('click',close);
+segs.forEach((b,k)=>b.addEventListener('click',()=>show(k)));
+addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+if(!RM)L.addEventListener('pointermove',e=>{const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;box.style.transform='perspective(900px) rotateY('+(x*9).toFixed(2)+'deg) rotateX('+(-y*9).toFixed(2)+'deg)';st.style.transform='translate('+(-x*24).toFixed(1)+'px,'+(-y*24).toFixed(1)+'px)'});
+show(0);go.focus({preventScroll:true});
+})();
+</script>
+<div id="sky" aria-hidden="true"></div>
+<div id="breath" aria-hidden="true"></div>
+<a class="wafab" id="wafab" href="#" target="_blank" rel="noopener" aria-label="Chat with Anamika on WhatsApp"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.2A9.5 9.5 0 1 0 12 2.5z"/><path fill="#fff" stroke="none" d="M16.6 14.2c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1-.7-.3-1.500-.8-2.300-1.700-.5-.5-.9-1.100-1-1.300-.1-.2 0-.3.1-.5l.4-.4.2-.4v-.4l-.7-1.700c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.3-.9.9-.9 2.100s.9 2.500 1 2.600c.1.200 1.800 2.800 4.400 3.900 1.600.7 2.200.7 3 .6.500-.1 1.400-.6 1.600-1.200.2-.6.2-1.100.1-1.200-.1-.1-.2-.2-.5-.3z"/></svg></a>
+<header>
+  <a class="brand" href="#top"><span class="bn">Anamika</span><span class="bt">Astro science, practical solutions</span></a>
+  <nav><a href="#readings">Readings</a><a href="#stories">Stories</a><a href="#about">About</a><a href="#book">WhatsApp</a><a href="#book">Book</a></nav>
+</header>
+<main id="top">
+  <div class="wrap hero" id="hero">
+    <div class="h-head">
+      <h2 class="who">Consultant Anamika</h2>
+      <h1>What’s weighing on you right now?</h1>
+      <p class="lede">I’m Anamika. I combine astro science with practical steps you can act on. Pick one area, and in three taps see what your chart looks at and how I’d help.</p>
+    </div>
+    <div class="finder" id="finder" aria-live="polite">
+      <div class="ftop"><button type="button" class="link" id="fb" hidden>← Back</button><div class="prog" id="prog"><i></i><i></i><i></i></div></div>
+      <p id="fq"></p><div id="fo"></div><div id="fr" style="display:none"></div>
+    </div>
+    <button type="button" class="link calm" id="calmBtn">Take one calm minute</button>
+    <div class="wheelspace" id="wheelSpace" aria-hidden="true"></div>
+    <div class="reading" aria-live="polite">
+      <p class="hint">Tap any rashi on the wheel</p>
+      <h2 id="rName">Tula</h2>
+      <div class="meta" id="rMeta"></div>
+      <p id="rNote"></p>
+      <label for="dob">Find your rashi by birth date</label>
+      <input type="date" id="dob">
+      <small>Sun sign by sidereal dates. Your Moon sign (Chandra rashi) needs your birth time and place.</small>
+    </div>
+  </div>
+
+  <div class="wrap"><section id="readings">
+    <h2 class="t">Pick the session that fits</h2>
+    <div class="svc"><h3>Janma Kundli reading</h3><p>A full walk through your birth chart: lagna, grahas, yogas and the dasha periods ahead. 90 minutes, recorded for you to keep.</p><div class="pr">₹4,500<a href="#book" data-s="Janma Kundli reading">Book this</a></div></div>
+    <div class="svc"><h3>Varshaphal (year ahead)</h3><p>Gochar (transits) and running dasha for the next 12 months, mapped to the decisions you are facing. 60 minutes.</p><div class="pr">₹3,200<a href="#book" data-s="Varshaphal (year ahead)">Book this</a></div></div>
+    <div class="svc"><h3>Kundli milan</h3><p>Two charts side by side with guna matching and a plain-language view of what it means. Bring both birth details. 75 minutes.</p><div class="pr">₹3,800<a href="#book" data-s="Kundli milan">Book this</a></div></div>
+    <div class="svc"><h3>Career &amp; business strategy</h3><p>Your 10th and 11th houses and running dasha, turned into a plan for a job move, promotion, launch or partnership. 60 minutes.</p><div class="pr">₹3,500<a href="#book" data-s="Career &amp; business strategy">Book this</a></div></div>
+    <div class="svc"><h3>Debt &amp; money timing</h3><p>Which months favour clearing dues and which call for caution with new borrowing, with a simple priority list. 60 minutes.</p><div class="pr">₹3,000<a href="#book" data-s="Debt &amp; money timing">Book this</a></div></div>
+    <div class="svc"><h3>Property &amp; home</h3><p>Timing and direction for buying, selling or settling a family property matter, with dates for signing. 60 minutes.</p><div class="pr">₹3,200<a href="#book" data-s="Property &amp; home">Book this</a></div></div>
+    <div class="svc"><h3>Muhurta, choose your date</h3><p>An auspicious date and time for a wedding, move, launch or signing, checked against your chart. 45 minutes.</p><div class="pr">₹2,000<a href="#book" data-s="Muhurta, choose your date">Book this</a></div></div>
+    <div class="svc"><h3>Shanti flow session</h3><p>A calming 40 minutes: guided breathing, a reflection from your Moon sign and a simple daily routine to settle a busy mind. Not a substitute for therapy.</p><div class="pr">₹1,800<a href="#book" data-s="Shanti flow session">Book this</a></div></div>
+    </section></div>
+
+  <div class="wrap"><section id="stories">
+    <h2 class="t">What people say after their session</h2>
+    <div id="tf"></div>
+    <div id="tl"></div>
+    <p class="note">Experiences vary. Astrology offers perspective, not guarantees.</p>
+  </section></div>
+
+  <div class="wrap"><section id="about">
+    <h2 class="t">Astrology as a way to think, not a verdict</h2>
+    <div class="about">
+      <div><p><strong>I don’t predict a fixed future.</strong> A kundli shows timing and temperament, read here in the sidereal zodiac (Lahiri ayanamsa). What you do with them is yours.</p><p>Every session starts with your question. I read your birth chart for your personality and strengths, then give practical steps you can afford and act on: no rituals, no costly remedies, no fear.</p></div>
+      <div><p><strong>Before we meet</strong>, have your birth date, exact time and place ready. If you don’t know the time, we can still work from the date and look at broader themes.</p><p>Sessions run on video or phone, in English, Hindi or Kannada.</p></div>
+    </div>
+  </section></div>
+
+  <div class="wrap"><section id="book">
+    <h2 class="t">Request a session</h2>
+    <form id="bf">
+      <div><label for="n">Your name</label><input id="n" required></div>
+      <div><label for="e">Email (optional)</label><input id="e" type="email"></div>
+      <div><label for="s">Reading</label><select id="s"><option>Janma Kundli reading</option><option>Varshaphal (year ahead)</option><option>Kundli milan</option><option>Career &amp; business strategy</option><option>Debt &amp; money timing</option><option>Property &amp; home</option><option>Muhurta, choose your date</option><option>Shanti flow session</option></select></div>
+      <div><label for="d">Preferred date</label><input id="d" type="date" required></div>
+      <div class="full"><label for="q">What do you want to ask the chart?</label><input id="q" placeholder="A job offer, a move, a relationship…"></div>
+      <div class="full"><button class="btn wa" type="submit">Send on WhatsApp</button> <span class="note">Opens WhatsApp with your details filled in.</span></div>
+    </form>
+    <div id="ok" role="status"></div>
+  </section></div>
+</main>
+<footer>© Anamika, Astro Science. Readings are for reflection and guidance, not medical, legal or financial advice.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.4.2/pixi.min.js"></script>
+<script>
+const SIGNS=[
+["Mesha","","","Ram","Mangala","Fire","14 Apr – 14 May","Bold and quick to act. I look at where your drive starts things well and where patience would pay."],
+["Vrishabha","","","Bull","Shukra","Earth","15 May – 14 Jun","Steady, sensory and loyal. We look at money, comfort and how to stay secure without staying stuck."],
+["Mithuna","","","Twins","Budha","Air","15 Jun – 15 Jul","Curious and quick with words. We work on focus: which idea deserves your next year."],
+["Karka","","","Crab","Chandra","Water","16 Jul – 16 Aug","Protective and intuitive. We look at home, family and setting boundaries without guilt."],
+["Simha","","","Lion","Surya","Fire","17 Aug – 16 Sep","Warm and visible. I look at where recognition matters to you and where it distracts."],
+["Kanya","","","Maiden","Budha","Earth","17 Sep – 17 Oct","Careful and useful. We explore how to keep high standards without carrying every task."],
+["Tula","","","Scales","Shukra","Air","18 Oct – 16 Nov","Fair-minded and relational. Decisions are the theme: what you weigh, and what you avoid."],
+["Vrishchika","","","Scorpion","Mangala","Water","17 Nov – 15 Dec","Intense and private. Charts like yours show deep change cycles, and I help time them."],
+["Dhanu","","","Archer","Guru","Fire","16 Dec – 13 Jan","Restless and honest. We look at study, travel, dharma and commitments you can keep."],
+["Makara","","","Sea-goat","Shani","Earth","14 Jan – 12 Feb","Disciplined and long-range. I look at ambition, workload and when to rest."],
+["Kumbha","","","Water-pot","Shani","Air","13 Feb – 13 Mar","Independent and inventive. We examine community, a change of path and where you feel free."],
+["Meena","","","Fish","Guru","Water","14 Mar – 13 Apr","Imaginative and absorbing. We look at creativity, faith and keeping your footing."]];
+const GC=[0xF2B84B,0xE6E1F4,0xE5675B,0x7FD39A,0xF0D77A,0xF2A7C8,0x7A8CE0,0x9A8FB8,0xB0845F];
+const GRD=[[.20,1.0],[.28,2.2],[.36,.8],[.44,1.6],[.52,.5],[.60,1.2],[.68,.35],[.75,-.25],[.75,-.25]];
+const GN=["Surya","Chandra","Mangala","Budha","Guru","Shukra","Shani","Rahu","Ketu"];
+const $=id=>document.getElementById(id);
+const WA='919999999999'; // replace with Anamika’s WhatsApp number: country code + number, digits only
+function waLink(m){return 'https://wa.me/'+WA+'?text='+encodeURIComponent(m)}
+const PI=Math.PI;
+// ---- vector icon kit (unit box -1..1) ----
+const ln=(g,s,p)=>{g.moveTo(p[0][0]*s,p[0][1]*s);for(let i=1;i<p.length;i++)g.lineTo(p[i][0]*s,p[i][1]*s)};
+const ar=(g,s,x,y,r,a,b,ac)=>{g.moveTo((x+Math.cos(a)*r)*s,(y+Math.sin(a)*r)*s);g.arc(x*s,y*s,r*s,a,b,!!ac)};
+const ci=(g,s,x,y,r)=>g.drawCircle(x*s,y*s,r*s);
+const fish=(g,s,cx,cy,d,k)=>{g.drawEllipse(cx*s,cy*s,.5*k*s,.28*k*s);ln(g,s,[[cx+d*.5*k,cy],[cx+d*.85*k,cy-.25*k],[cx+d*.85*k,cy+.25*k],[cx+d*.5*k,cy]]);ci(g,s,cx-d*.25*k,cy-.05*k,.04)};
+const RASHI=[
+(g,s)=>{ar(g,s,-.4,0,.4,-PI/2,PI/2,true);ar(g,s,.4,0,.4,-PI/2,PI/2,false);ln(g,s,[[-.4,-.4],[0,-.15],[.4,-.4]]);ln(g,s,[[-.4,.4],[-.15,.85],[.15,.85],[.4,.4]])},
+(g,s)=>{ci(g,s,0,.25,.42);ar(g,s,0,.15,.75,1.15*PI,1.85*PI,false)},
+(g,s)=>{ci(g,s,-.28,-.62,.17);ci(g,s,.28,-.62,.17);ln(g,s,[[-.28,-.4],[-.28,.75]]);ln(g,s,[[.28,-.4],[.28,.75]]);ln(g,s,[[-.28,-.05],[.28,-.05]]);ln(g,s,[[-.5,.75],[-.06,.75]]);ln(g,s,[[.06,.75],[.5,.75]])},
+(g,s)=>{g.drawEllipse(0,.15*s,.5*s,.32*s);ci(g,s,-.62,-.45,.2);ci(g,s,.62,-.45,.2);ln(g,s,[[-.4,-.05],[-.55,-.28]]);ln(g,s,[[.4,-.05],[.55,-.28]]);ln(g,s,[[-.35,.4],[-.6,.7]]);ln(g,s,[[-.15,.45],[-.25,.8]]);ln(g,s,[[.15,.45],[.25,.8]]);ln(g,s,[[.35,.4],[.6,.7]])},
+(g,s)=>{ci(g,s,0,0,.38);for(let i=0;i<12;i++){const a=i*PI/6;ln(g,s,[[Math.cos(a)*.55,Math.sin(a)*.55],[Math.cos(a)*.85,Math.sin(a)*.85]])}},
+(g,s)=>{ln(g,s,[[0,.85],[0,-.75]]);[.55,.2,-.15,-.5].forEach(y=>{ln(g,s,[[0,y],[-.42,y-.3]]);ln(g,s,[[0,y],[.42,y-.3]])});g.drawEllipse(0,-.88*s,.1*s,.16*s)},
+(g,s)=>{ln(g,s,[[-.85,-.3],[.85,-.3]]);ln(g,s,[[0,-.3],[0,.7]]);ln(g,s,[[-.4,.78],[.4,.78]]);ci(g,s,0,-.45,.1);[-1,1].forEach(d=>{const x=.68*d;ln(g,s,[[x,-.3],[x-.24,.15]]);ln(g,s,[[x,-.3],[x+.24,.15]]);ln(g,s,[[x-.3,.15],[x+.3,.15]])})},
+(g,s)=>{ar(g,s,.1,0,.55,.6*PI,2*PI,false);ln(g,s,[[.65,0],[.65,.35],[.5,.2]]);ci(g,s,-.25,.6,.2);ln(g,s,[[-.45,.5],[-.78,.3]]);ln(g,s,[[-.45,.68],[-.8,.72]])},
+(g,s)=>{ln(g,s,[[-.8,.8],[.8,-.8]]);ln(g,s,[[.35,-.8],[.8,-.8],[.8,-.35]]);ln(g,s,[[-.5,.1],[-.1,.5]]);ln(g,s,[[-.8,.8],[-.55,.8]]);ln(g,s,[[-.8,.8],[-.8,.55]])},
+(g,s)=>{ln(g,s,[[-.8,-.6],[-.55,.2],[-.3,-.5],[0,.35]]);ci(g,s,.3,.35,.3)},
+(g,s)=>{ci(g,s,-.1,.2,.42);ln(g,s,[[-.3,-.17],[-.3,-.6],[.1,-.6],[.1,-.17]]);ln(g,s,[[-.42,-.6],[.22,-.6]]);ln(g,s,[[.45,.1],[.6,.3],[.75,.1],[.9,.3]]);ln(g,s,[[.42,.42],[.57,.62],[.72,.42],[.87,.62]])},
+(g,s)=>{fish(g,s,0,-.4,1,.85);fish(g,s,0,.4,-1,.85);ln(g,s,[[-.1,-.12],[.1,.12]])}];
+const GRAHA=[
+(g,s)=>{ci(g,s,0,0,.65);ci(g,s,0,0,.12)},
+(g,s)=>{const a=Math.asin(.7/.85);ar(g,s,-.1,0,.7,-PI/2,PI/2,false);ar(g,s,-.55,0,.85,-a,a,false)},
+(g,s)=>{ci(g,s,-.15,.15,.45);ln(g,s,[[.17,-.17],[.7,-.7]]);ln(g,s,[[.3,-.7],[.7,-.7],[.7,-.3]])},
+(g,s)=>{ci(g,s,0,0,.3);ar(g,s,0,-.3,.28,PI,2*PI,false);ln(g,s,[[0,.3],[0,.8]]);ln(g,s,[[-.25,.55],[.25,.55]])},
+(g,s)=>{ln(g,s,[[.35,-.8],[.35,.8]]);ln(g,s,[[-.6,.35],[.7,.35]]);ar(g,s,-.2,-.35,.4,PI/2,1.5*PI,false);ln(g,s,[[-.2,-.75],[.1,-.75],[.35,-.5]])},
+(g,s)=>{ci(g,s,0,-.3,.38);ln(g,s,[[0,.08],[0,.8]]);ln(g,s,[[-.28,.5],[.28,.5]])},
+(g,s)=>{ln(g,s,[[-.35,-.8],[-.35,.25]]);ln(g,s,[[-.6,-.55],[-.1,-.55]]);ar(g,s,0,.1,.35,PI,2.2*PI,false);ln(g,s,[[.28,.3],[0,.8]])},
+(g,s)=>{ar(g,s,0,.2,.5,PI,2*PI,false);ci(g,s,-.5,.34,.12);ci(g,s,.5,.34,.12)},
+(g,s)=>{ar(g,s,0,-.2,.5,0,PI,false);ci(g,s,-.5,-.34,.12);ci(g,s,.5,-.34,.12)}];
+const now=new Date();
+const ST=[414,515,615,716,817,917,1018,1117,1216,114,213,314];
+function signOf(m,d){const v=m*100+d;if(v>=1216||v<114)return 8;let idx=9;for(const i of [9,10,11,0,1,2,3,4,5,6,7])if(v>=ST[i])idx=i;return idx}
+let sel=signOf(now.getMonth()+1,now.getDate());
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const app=new PIXI.Application({resizeTo:window,backgroundAlpha:0,antialias:true,resolution:Math.min(devicePixelRatio||1,2),autoDensity:true});
+$('sky').appendChild(app.view);
+const BRASS=0xD4AF6A,MIST=0xE6E1F4,PLUM=0x2A2058,INK=0x0E0C2B;
+const dot=new PIXI.Graphics();dot.beginFill(0xffffff).drawCircle(0,0,4).endFill();
+const tex=app.renderer.generateTexture(dot);
+const starLayer=new PIXI.Container();app.stage.addChild(starLayer);
+const stars=[];
+for(let i=0;i<230;i++){const s=new PIXI.Sprite(tex);s.anchor.set(.5);const z=Math.random();s.scale.set(.1+z*.3);s.tint=Math.random()<.2?BRASS:MIST;s.ph=Math.random()*6.28;s.sp=.5+Math.random()*1.5;s.nx=Math.random();s.ny=Math.random();starLayer.addChild(s);stars.push(s)}
+const root=new PIXI.Container();app.stage.addChild(root);
+const wheel=new PIXI.Container(),chart=new PIXI.Container(),planets=new PIXI.Container();
+root.addChild(wheel,chart,planets);
+let R=300,BR=26,hover=false;const glyphs=[],grahas=[];
+function drawWheel(){
+  wheel.removeChildren();glyphs.length=0;chart.removeChildren();planets.removeChildren();grahas.length=0;
+  BR=Math.max(11,R*.088);
+  const g=new PIXI.Graphics();wheel.addChild(g);
+  g.beginFill(PLUM,.4).drawCircle(0,0,R).endFill();
+  g.lineStyle(1.5,BRASS,.9).drawCircle(0,0,R);
+  g.lineStyle(1,BRASS,.5).drawCircle(0,0,R*.8);
+  for(let i=0;i<12;i++){const a=i*PI/6-PI/12-PI/2;g.lineStyle(1,BRASS,.35).moveTo(Math.cos(a)*R*.8,Math.sin(a)*R*.8).lineTo(Math.cos(a)*R,Math.sin(a)*R)}
+  SIGNS.forEach((s,i)=>{
+    const a=i*PI/6-PI/2;
+    const c=new PIXI.Container();c.x=Math.cos(a)*R*.9;c.y=Math.sin(a)*R*.9;
+    c.bg=new PIXI.Graphics();c.ic=new PIXI.Graphics();c.addChild(c.bg,c.ic);
+    c.eventMode='static';c.cursor='pointer';c.hitArea=new PIXI.Circle(0,0,BR*1.2);
+    c.on('pointertap',()=>select(i));
+    c.on('pointerover',()=>{hover=true});c.on('pointerout',()=>{hover=false});
+    c.i=i;wheel.addChild(c);glyphs.push(c)});
+  const k=new PIXI.Graphics(),h=R*.42;chart.addChild(k);
+  k.lineStyle(1.2,BRASS,.55).drawRect(-h,-h,2*h,2*h);
+  k.lineStyle(1,BRASS,.45).moveTo(-h,0).lineTo(0,-h).lineTo(h,0).lineTo(0,h).lineTo(-h,0);
+  k.lineStyle(1,BRASS,.35).moveTo(-h,-h).lineTo(h,h).moveTo(h,-h).lineTo(-h,h);
+  const gr=Math.max(8,R*.036);
+  GRD.forEach(([r,sp],j)=>{
+    const col=GC[j],o=new PIXI.Graphics();o.lineStyle(1,col,.2).drawCircle(0,0,R*r);planets.addChild(o);
+    const c=new PIXI.Container(),b=new PIXI.Graphics(),ic=new PIXI.Graphics();
+    b.lineStyle(1,col,.8).beginFill(INK,.9).drawCircle(0,0,gr).endFill();
+    ic.lineStyle(Math.max(1.1,R*.0045),col,1);GRAHA[j](ic,gr*.62);
+    c.addChild(b,ic);c.ang=j===8?PI:j*1.7;c.r=r;c.sp=sp;planets.addChild(c);grahas.push(c);place(c)});
+  paintSel();
+}
+function place(c){c.x=Math.cos(c.ang)*R*c.r;c.y=Math.sin(c.ang)*R*c.r}
+function paintSel(){glyphs.forEach(c=>{const on=c.i===sel;
+  c.bg.clear();c.bg.lineStyle(1.2,BRASS,on?1:.6).beginFill(on?BRASS:INK,on?1:.8).drawCircle(0,0,BR).endFill();
+  c.ic.clear();c.ic.lineStyle(Math.max(1.4,R*.0055),on?INK:BRASS,1);RASHI[c.i](c.ic,BR*.6)})}
+function select(i){sel=i;paintSel();const s=SIGNS[i];$('rName').textContent=s[0];$('rMeta').textContent=s[3]+', ruled by '+s[4]+', '+s[5]+' sign. Sun here '+s[6];$('rNote').textContent=s[7]}
+function placeWheel(){const sp=$('wheelSpace').getBoundingClientRect();if(!sp.width)return;const nr=sp.width/2*.94;root.x=sp.left+sp.width/2;root.y=sp.top+scrollY+sp.height/2;if(Math.abs(nr-R)>1||!glyphs.length){R=nr;drawWheel()}}
+function layout(){const w=innerWidth,h=innerHeight;stars.forEach(s=>{s.x=s.nx*w;s.y=s.ny*h});placeWheel()}
+layout();select(sel);addEventListener('resize',layout);addEventListener('load',layout);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(layout);
+if(window.ResizeObserver)new ResizeObserver(placeWheel).observe(document.querySelector('.hero'));
+let focus=[];
+const PLANS=["Janma Kundli reading", "Varshaphal (year ahead)", "Kundli milan", "Career & business strategy", "Debt & money timing", "Property & home", "Muhurta, choose your date", "Shanti flow session"];
+const URG=["This month","Within 3 months","This year"];
+const UR=["We’d start with your current dasha and the next 30 days of transits.","We’d map your current dasha and the next three months, with key dates.","We’d walk through the full 12 months, month by month."];
+const TOPICS=[
+{n:"Career & job",s:"Job, promotion, a switch",g:[6,0],h:"10th house (career), 6th house (daily work)",p:3,t:"Career timing turns on the 10th house, its lord and the dasha running now. Shani phases can feel slow at work, and the chart shows when that phase changes and which role suits your strengths.",q:["I feel stuck and I’m not growing","I’m deciding whether to change jobs","I keep missing promotions","I have an offer and can’t decide"]},
+{n:"Business & startup",s:"Launch, partners, growth",g:[3,4,7],h:"7th house (partners), 10th house (work), 11th house (gains)",p:3,pp:{2:2},t:"Launching or scaling is about timing. We check whether you are in a building phase or a waiting phase, and how a partner’s chart sits against yours.",q:["Should I start now or wait?","My business has stalled","I’m choosing a partner or co-founder","I want to raise money or scale"]},
+{n:"Debt & money",s:"Loans, cash flow, dues",g:[6,7,2],h:"6th house (loans), 8th house (sudden changes), 12th house (outflow)",p:4,t:"Loans sit in the 6th house and spending in the 12th. We look at which periods favour clearing dues and which call for caution with new borrowing. This guides timing and does not replace a repayment plan.",q:["Loans are piling up","Money comes in and leaves just as fast","Someone owes me and isn’t paying","When will I be debt-free?"]},
+{n:"Relationships",s:"Marriage, partner, family",g:[5,1,4],h:"7th house (partner), 2nd house (family), Moon sign",p:2,t:"The 7th house and Shukra describe partnership, and the Moon shows how you feel it. We look at timing for commitment and at the patterns that keep repeating.",q:["Marriage is delayed","Is this the right partner for me?","There is constant conflict at home","I’m healing after a breakup"]},
+{n:"Property & home",s:"Buy, sell, disputes",g:[2,6,1],h:"4th house (home, land), 2nd house (assets)",p:5,t:"The 4th house governs home and land, with Mangala and Shani as key grahas. We check whether the current dasha supports buying, selling or settling a dispute, and which dates suit signing.",q:["Is it the right time to buy?","My property is taking too long to sell","There is a family property dispute","Which place or direction suits me?"]},
+{n:"Major decisions",s:"Move, invest, pick a date",g:[4,6,1],h:"Running dasha, 9th house (fortune), Guru and Shani transits",p:6,t:"For a big move or investment we read your running dasha and the Guru and Shani transits, then pick a window that isn’t working against you.",q:["Should I move to another city or country?","I’m weighing a big investment","I’m switching careers","I need an auspicious date"]},
+{n:"Life direction",s:"Purpose, delays, a roadmap",g:[0,4,8],h:"Lagna (self), 5th house (purpose), 9th house (fortune)",p:0,t:"When life feels directionless we start from your lagna and the 5th and 9th houses, which hold purpose and fortune, then draw a three-year roadmap.",q:["I feel lost and without purpose","Everything feels delayed","My energy and health are low","I want a roadmap for the next 3 years"]}];
+const st={step:0,t:null,q:null,u:null};let firstR=true;
+const fq=$('fq'),fo=$('fo'),fr=$('fr'),fb=$('fb'),prog=$('prog');
+function chip(txt,fn,sub){const b=document.createElement('button');b.type='button';b.className='chip';const t=document.createElement('b');t.textContent=txt;b.appendChild(t);if(sub){const s=document.createElement('span');s.textContent=sub;b.appendChild(s)}b.onclick=fn;fo.appendChild(b)}
+function planOf(){const T=TOPICS[st.t];return T.pp&&T.pp[st.q]!==undefined?T.pp[st.q]:T.p}
+function render(){
+  fo.innerHTML='';fr.innerHTML='';fr.style.display='none';fo.style.display='flex';fb.hidden=st.step===0;
+  const T=TOPICS[st.t];[...prog.children].forEach((d,i)=>d.className=(st.step>=3||i<=st.step)?'on':'');fo.className=st.step===0?'':'list';
+  if(st.step===0){fq.textContent='What’s weighing on you most?';TOPICS.forEach((x,i)=>chip(x.n,()=>{st.t=i;focus=x.g;st.step=1;render()},x.s))}
+  else if(st.step===1){fq.textContent='Which sounds closest to your situation?';T.q.forEach((x,i)=>chip(x,()=>{st.q=i;st.step=2;render()}))}
+  else if(st.step===2){fq.textContent='How soon do you need clarity?';URG.forEach((x,i)=>chip(x,()=>{st.u=i;st.step=3;render()}))}
+  else{
+    fq.textContent='Here’s what I’d look at for you';fo.style.display='none';fr.style.display='block';
+    fr.innerHTML='<p class="you">“'+T.q[st.q]+'”</p><p><strong>Chart areas:</strong> '+T.h+'</p><p><strong>Grahas pulsing on the wheel:</strong> '+T.g.map(j=>GN[j]).join(', ')+'</p><p>'+T.t+'</p><p>'+UR[st.u]+'</p><p class="rec">Suggested session: '+PLANS[planOf()]+'</p>';
+    const row=document.createElement('div');row.className='fa';
+    const a=document.createElement('a');a.className='btn';a.href='#book';a.textContent='Book this session';
+    a.onclick=()=>{$('s').value=PLANS[planOf()];$('q').value=T.n+': '+T.q[st.q]+' ('+URG[st.u].toLowerCase()+')'};
+    const r=document.createElement('button');r.type='button';r.className='link';r.textContent='Start over';
+    r.onclick=()=>{st.step=0;focus=[];render()};
+    const w=document.createElement('a');w.className='btn wa';w.target='_blank';w.rel='noopener';w.textContent='Send on WhatsApp';
+    w.href=waLink('Hello Anamika, I’d like help with: '+T.n+', “'+T.q[st.q]+'” ('+URG[st.u].toLowerCase()+'). Suggested session: '+PLANS[planOf()]+'.');
+    a.className='link';a.textContent='Or fill the booking form';
+    row.append(w,a,r);fr.appendChild(row);
+    const n=document.createElement('p');n.className='note';n.textContent='Astrology offers perspective, not guarantees. For serious debt, legal or health matters, please also consult a qualified professional.';fr.appendChild(n);
+  }
+  if(!firstR){const el=fo.firstChild||fr.querySelector('a');if(el)el.focus({preventScroll:true})}firstR=false;
+}
+fb.onclick=()=>{st.step=Math.max(0,st.step-1);if(st.step===0)focus=[];render()};
+render();
+const water=new PIXI.Graphics(),ripG=new PIXI.Graphics(),ring=new PIXI.Graphics();
+app.stage.addChildAt(water,1);app.stage.addChildAt(ripG,2);root.addChild(ring);
+const ripples=[];let calm=0,calmOn=false,calmStart=0,lastRip=0,lx=0,ly=0,lastBeat=-1;
+const ripple=(x,y,big)=>{if(ripples.length<16)ripples.push({x,y,r:4,a:big?.6:.45,big})};
+addEventListener('pointerdown',e=>{if(!reduce)ripple(e.clientX,e.clientY)});
+addEventListener('pointermove',e=>{if(reduce)return;const n=performance.now();if(n-lastRip>220&&Math.hypot(e.clientX-lx,e.clientY-ly)>45){ripple(e.clientX,e.clientY);lastRip=n;lx=e.clientX;ly=e.clientY}});
+const LAY=[[0x4FB3B0,.10,.012,.7,26,70],[0x6C5BC4,.14,.008,.45,34,50],[0xD4AF6A,.07,.016,-.6,18,32]];
+function drawWater(t,dt){
+  const w=innerWidth,h=innerHeight;water.clear();
+  LAY.forEach(([col,al,f,sp,A,off])=>{const a=A*(1+calm*1.4),base=h-off-calm*40;
+    water.beginFill(col,al+calm*.06).moveTo(0,h);
+    for(let x=0;x<=w+14;x+=14)water.lineTo(x,base+Math.sin(x*f+t*sp)*a+Math.sin(x*f*2.3-t*sp*1.3)*a*.35);
+    water.lineTo(w+14,h).closePath().endFill()});
+  ripG.clear();
+  for(let i=ripples.length-1;i>=0;i--){const p=ripples[i];p.r+=1.5*dt*(p.big?1.7:1);p.a-=.005*dt;
+    if(p.a<=0){ripples.splice(i,1);continue}
+    ripG.lineStyle(1.5,0x8FD3D0,p.a).drawCircle(p.x,p.y,p.r);
+    if(p.r>16)ripG.lineStyle(1,0xE6E1F4,p.a*.5).drawCircle(p.x,p.y,p.r*.62)}
+}
+const calmBtn=$('calmBtn'),bt=$('breath');
+function stopCalm(done){calmOn=false;calmBtn.textContent='Take one calm minute';ring.clear();
+  if(done){bt.textContent='Welcome back';setTimeout(()=>{if(!calmOn)bt.style.opacity=0},2600)}else bt.style.opacity=0}
+calmBtn.onclick=()=>{if(calmOn)stopCalm(false);else{calmOn=true;calmStart=t0;lastBeat=-1;calmBtn.textContent='End calm minute'}};
+function calmTick(dt){
+  calm+=((calmOn?1:0)-calm)*.03*dt;
+  if(!calmOn)return;
+  const e=t0-calmStart;if(e>=36){stopCalm(true);return}
+  const ph=e%12;let f;
+  if(ph<4){f=ph/4;bt.textContent='Breathe in'}else if(ph<6){f=1;bt.textContent='Hold'}else{f=1-(ph-6)/6;bt.textContent='Breathe out'}
+  bt.style.opacity=1;
+  const s=f*f*(3-2*f);ring.clear();ring.lineStyle(2,0x8FD3D0,.85).drawCircle(0,0,R*(.14+.5*s));
+  const b=Math.floor(e/3);if(b!==lastBeat){lastBeat=b;if(!reduce)ripple(root.x,root.y,true)}
+}
+const TS=[
+["Career","I had two offers and no way to choose. The session set my dasha against both timelines. I took the slower one and I’m glad.","Ravi K., product engineer, Bengaluru"],
+["Career","I stopped waiting for a sign and started planning. Understanding the Shani phase made my slow year make sense.","Anjali S., teacher, Mysuru"],
+["Business","We were about to sign with a partner. Reading both charts made us ask questions we had skipped, and we reworked the deal.","Imran and Pooja, café owners, Hosur"],
+["Business","I launched three months later than I wanted, on a date we chose together, with a much clearer plan.","Sandeep M., founder, Chennai"],
+["Debt","I came in panicking about loans and left with a calm order of what to clear first. It didn’t replace my accountant. It steadied me.","Lakshmi N., shop owner, Anekal"],
+["Relationships","We argued about the same thing every week. Seeing our charts side by side gave us words for it.","Karthik and Divya, Bengaluru"],
+["Relationships","Marriage talks had stalled for a year. The session gave my parents and me one shared picture of timing.","Meghana R., Hubballi"],
+["Property","We held off on the flat for a few months and used the time to renegotiate the price. The wait was worth it.","Arun and Sheela, Electronic City"],
+["Life & calm","I felt lost after my layoff. The three-year roadmap gave me small steps, not a prediction.","Farah A., designer, Bengaluru"],
+["Life & calm","The Shanti flow session was the first hour in weeks where my mind went quiet.","Deepa V., nurse, Hosur"]];
+const CATS=["All","Career","Business","Debt","Relationships","Property","Life & calm"];
+const tf=$('tf'),tl=$('tl');
+function showT(c){
+  [...tf.children].forEach(b=>b.classList.toggle('on',b.textContent===c));
+  tl.innerHTML='';
+  TS.filter(x=>c==='All'||x[0]===c).forEach(x=>{
+    const f=document.createElement('figure');f.className='q';
+    const p=document.createElement('p');p.textContent='“'+x[1]+'”';
+    const cp=document.createElement('figcaption');cp.textContent=x[2];
+    f.append(p,cp);tl.appendChild(f)});
+}
+CATS.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=c;b.onclick=()=>showT(c);tf.appendChild(b)});
+showT('All');
+document.querySelectorAll('a[data-s]').forEach(a=>a.addEventListener('click',()=>{$('s').value=a.dataset.s}));
+let mx=0,my=0;addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5});
+let t0=0;
+app.ticker.add(dt=>{
+  t0+=dt/60;
+  if(!reduce){
+    if(!hover)wheel.rotation+=.0006*dt;
+    glyphs.forEach(c=>c.rotation=-wheel.rotation);
+    grahas.forEach(c=>{c.ang+=c.sp*.004*dt;place(c)});
+    stars.forEach(s=>{s.alpha=.35+.65*Math.abs(Math.sin(t0*s.sp+s.ph))});
+  }else stars.forEach(s=>s.alpha=.7);
+  grahas.forEach((c,j)=>{const f=focus.includes(j);const k=focus.length?(f?(reduce?1.4:1.4+.25*Math.sin(t0*4)):.8):1;c.scale.set(k);c.alpha=focus.length&&!f?.35:1});
+  calmTick(dt);drawWater(reduce?0:t0,dt);
+  starLayer.x+=((-mx*30)-starLayer.x)*.05;starLayer.y+=((-my*30)-starLayer.y)*.05;
+  root.alpha=Math.max(.12,1-scrollY/(innerHeight*.8));
+});
+$('dob').addEventListener('change',e=>{const v=e.target.value;if(!v)return;const [,m,d]=v.split('-').map(Number);select(signOf(m,d))});
+$('wafab').href=waLink('Hello Anamika, I’d like to talk about a reading.');
+$('bf').addEventListener('submit',e=>{e.preventDefault();
+  const m='Hello Anamika, I’d like to book a '+$('s').value+'.\nName: '+$('n').value.trim()+'\nPreferred date: '+$('d').value+(($('q').value.trim())?'\nAbout: '+$('q').value.trim():'')+(($('e').value.trim())?'\nEmail: '+$('e').value.trim():'');
+  const url=waLink(m),ok=$('ok');
+  ok.textContent='Your request is ready, '+$('n').value.trim()+'. If WhatsApp didn’t open, tap the button below.';
+  const a=document.createElement('a');a.className='btn wa';a.href=url;a.target='_blank';a.rel='noopener';a.textContent='Open WhatsApp';
+  ok.appendChild(document.createElement('br'));ok.appendChild(a);
+  ok.style.display='block';$('bf').style.display='none';
+  window.open(url,'_blank','noopener');
+});
+</script>
+</body>
+</html>

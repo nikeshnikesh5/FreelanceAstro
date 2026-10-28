@@ -1,0 +1,5 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; background: #0E0C2B; }
+body { overflow: hidden; }
+.site-frame { width: 100%; height: 100dvh; min-height: 100vh; }
+.site-iframe { display: block; width: 100%; height: 100%; border: 0; background: #0E0C2B; }
